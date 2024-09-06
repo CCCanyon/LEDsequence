@@ -2,7 +2,7 @@
 IMPLEMENTATION:
  ================= Declaration ===================
 
-#include "LEDsequence.h" // include this
+#include "led_sequence.h" // include this
 
 const byte s[20] = { LED_PTN_NULL, LED_PTN_NULL, 5, 3, 7, 2, 4, 6, 9 }; // sequence: byte array
 
@@ -35,6 +35,7 @@ read the pattern defined down there, or read "numbers.png"
 #define LED_PTN_HARD_STROBE 14
 #define LED_PTN_SOFT_STROBE_F 15
 #define LED_PTN_HARD_STROBE_F 16
+#define LED_PTN_STROBE_SF 17
 
 
 #define LED_PTN_PRESET_LEN 1
@@ -45,6 +46,7 @@ const byte LED_PTN_PRESET_SOFT_STROBE[1] = { LED_PTN_SOFT_STROBE };
 const byte LED_PTN_PRESET_HARD_STROBE[1] = { LED_PTN_HARD_STROBE };
 const byte LED_PTN_PRESET_SOFT_STROBE_F[1] = { LED_PTN_SOFT_STROBE_F };
 const byte LED_PTN_PRESET_HARD_STROBE_F[1] = { LED_PTN_HARD_STROBE_F };
+const byte LED_PTN_PRESET_STROBE_SF[1] = { LED_PTN_STROBE_SF };
 
 class LEDsequence
 {
@@ -95,6 +97,8 @@ public:
   inline void strobe_hard(){ assign(LED_PTN_PRESET_HARD_STROBE); }
   inline void strobe_soft_f(){ assign(LED_PTN_PRESET_SOFT_STROBE_F); }
   inline void strobe_hard_f(){ assign(LED_PTN_PRESET_HARD_STROBE_F); }
+  inline void strobe_sf(){ assign(LED_PTN_PRESET_STROBE_SF); }
+  inline void set(const uint8_t& pwm){ analogWrite(pin, pwm); }
 
 private:
   const byte* sequence;
@@ -102,7 +106,7 @@ private:
   int i0 = 0; // sequence  index
   int i1 = 0; // pattern index
   // pattern
-  const uint32_t pattern[17][2] = { // 24 steps for two beats, time: 2-2, 100% / 50%
+  const uint32_t pattern[18][2] = { // 24 steps for two beats, time: 2-2, 100% / 50%
     { 0b000000000000000000000000,   // [0] long low
       0b111111111111111111000000 }, // llllllllllllllllll------
     { 0b110000000000000000000000,   // [1] 1 beat 
@@ -136,7 +140,9 @@ private:
     { 0b001111000011110000111100,   // [15] SOFT STROBE-FAST
       0b010110100101101001011010},  //
     { 0b001111000011110000111100,   // [16] HARD STROBE-FAST
-      0b001111000011110000111100}   //
+      0b001111000011110000111100},  //
+    { 0b000000000000000000000000,   // [11] STROBE-SUPER_FAST
+      0b101010101010101010101010}   //
   };
 };
 
