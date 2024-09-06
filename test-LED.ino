@@ -17,6 +17,7 @@ void setup()
   //led0.strobe_hard();
   //led0.strobe_soft_f();
   //led0.strobe_hard_f();
+  //led0.strobe_sf();
 
   then = micros();
 }
@@ -29,7 +30,7 @@ void loop()
 
 
   led0.update(dt);
-
+  //led0.set(127);
 
 
   delay(10); // change this delay is to see it handle different timings
