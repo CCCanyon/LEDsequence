@@ -69,23 +69,18 @@ public:
     timer += dt; // add time
     if(timer > LED_inverval) // time interval met
     {
-      bool H_bit;
-      bool L_bit;
       timer = 0; // reset timer
-      if(i1-- > 0) // iterate pattern index, next pattern tick (31 to 0)
-      {
-        //Serial.println(i1); // print pattern index (tick number)
-        H_bit = (pattern[sequence[i0]][0] >> i1) & 1; // high bit
-        L_bit = (pattern[sequence[i0]][1] >> i1) & 1; // low bit
-        if     (H_bit && L_bit) analogWrite(pin, 255); // 100%
-        else if(H_bit) analogWrite(pin, 120); // 100%
-        else if(L_bit) analogWrite(pin, 40); // 50%
-        else analogWrite(pin, 0); // 0%
-      }
-      else // next pattern (iterate sequence index)
+      //Serial.println(i1); // print pattern index (tick number)
+      bool H_bit = (pattern[sequence[i0]][0] >> i1) & 1; // high bit
+      bool L_bit = (pattern[sequence[i0]][1] >> i1) & 1; // low bit
+      if     (H_bit && L_bit) analogWrite(pin, 255); // 100%
+      else if(H_bit) analogWrite(pin, 120); // 100%
+      else if(L_bit) analogWrite(pin, 40); // 50%
+      else analogWrite(pin, 0); // 0%
+      if(--i1 < 0) // next pattern tick (iterate pattern index)
       {
         if(++i0 >= len) i0 = 0; // sequence index loops back
-        i1 = 24; // reset pattern index
+        i1 = 23; // reset pattern index
       }
     }
   }
